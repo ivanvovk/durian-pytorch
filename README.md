@@ -1,6 +1,8 @@
 # DurIAN
 Implementation of "Duration Informed Attention Network for Multimodal Synthesis" (https://arxiv.org/pdf/1909.01700.pdf) paper.
 
+**Status**: finishing tests and fixing bugs
+
 # Info
 
 DurIAN is encoder-decoder architecture for text-to-speech synthesis task. Unlike prior architectures like Tacotron 2 it doesn't learn explicit attention but takes into account phoneme durations information. So, to use this model one should have phonemized and duration-aligned dataset. However, you may try to use pretrained duration model on LJSpeech dataset (CMU dict used). Links will be provided below.
