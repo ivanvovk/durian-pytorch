@@ -16,8 +16,8 @@ DurIAN model consists of two modules: backbone synthesizer and duration predicto
 ![pipeline](https://user-images.githubusercontent.com/9570420/81863803-6f0ba300-9574-11ea-9f02-481c2bba81f0.png)
 
 Here are some of the most notable differences from vanilla DurIAN:
-* Prosodic boundary markers aren't used (we don't have them labeled), and thus there's no 'skip states' exclusion of prosodic boundaries' hidden states.
-* Style codes aren't used too (same).
+* Prosodic boundary markers aren't used (we didn't have them labeled), and thus there's no 'skip states' exclusion of prosodic boundaries' hidden states.
+* Style codes aren't used too (same reason).
 * Simpler network architectures.
 * No Prenet in decoder.
 * No attention used in decoder.
@@ -26,6 +26,8 @@ Here are some of the most notable differences from vanilla DurIAN:
 
 ## Vanilla version
 
+* Prosodic boundary markers aren't used (we didn't have them labeled), and thus there's no 'skip states' exclusion of prosodic boundaries' hidden states.
+* Style codes aren't used too (same reason).
 * Removed Prenet before CBHG encoder (didn't improved accuracy during experiments).
 
 ## Training
