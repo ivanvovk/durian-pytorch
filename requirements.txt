@@ -2,3 +2,4 @@ torch
 numpy
 matplotlib
 scipy
+librosa
