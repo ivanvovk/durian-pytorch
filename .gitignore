@@ -1,3 +1,8 @@
+# Pytorch and tensorboard files
+**/*.pt
+**/*.pth
+**/*events*
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

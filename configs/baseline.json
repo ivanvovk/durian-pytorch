@@ -1,0 +1,33 @@
+{
+    "use_normalization": false,
+    
+    "n_epoch": 1000,
+    "validation_step": 250,
+    "checkpoint_save_step": 1000,
+    
+    "batch_size": 64,
+    "learning_rate": 1e-3,
+    "grad_clip_threshold": 1.0,
+    "solve_alignments_as_bce": true,
+    "solve_alignments_as_mse": true,
+    
+    "n_mel_channels": 80,
+    "max_decoder_steps": 1500,
+    "embedding_dim": 256,
+    
+    "duration_model_rnn_dim": 256,
+    "duration_model_num_layers": 3,
+    
+    "encoder_kernel_size": 5,
+    "encoder_dropout_p": 0.5,
+    "encoder_residual_block_sizes": [256, 256, 512, 512, 512],
+    "encoder_rnn_dim": 256,
+    "encoder_rnn_num_layers": 1,
+    
+    "decoder_rnn_dim": 256,
+    "decoder_rnn_num_layers": 2,
+    
+    "postnet_residual_block_sizes": [256, 256, 256, 256, 256],
+    "postnet_kernel_size": 5,
+    "postnet_dropout_p": 0.0
+}
