@@ -75,6 +75,7 @@ def run(TTS_FRONTEND, TTS_CONFIG, args):
         print('KeyboardInterrupt: training is stopped.')
         return
 
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-c', '--config', required=True, type=str)

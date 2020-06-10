@@ -1,7 +1,7 @@
 # DurIAN
 Implementation of "Duration Informed Attention Network for Multimodal Synthesis" (https://arxiv.org/pdf/1909.01700.pdf) paper.
 
-**Status**: finishing tests and fixing bugs
+**Status**: fixing bugs, preparing filelist
 
 # Info
 
@@ -32,11 +32,11 @@ Here are some of the most notable differences from vanilla DurIAN:
 
 ## Training
 
-Both backbone synthesizer and duration models are trained simultaneously. For implementation simplifications duration model predicts alignment over the fixed max number of frames. You can learn this outputs as BCE problem, MSE problem by summing over frames-axis or to use both losses.
+Both backbone synthesizer and duration models are trained simultaneously. For implementation simplifications duration model predicts alignment over the fixed max number of frames. You can learn this outputs as BCE problem, MSE problem by summing over frames-axis or to use both losses. Experiments showed that BCE-version of optimization process showed itself being unstable, so prefer using MSE (don't mind if you get bad alignments in Tensorboard)
 
 # Reproducibility
 
-You can check the synthesis demo wavfile in `demo` folder (used Waveglow vocoder).
+You can check the synthesis demo wavfile (was obtained much before convergence) in `demo` folder (used Waveglow vocoder).
 
 1. First of all, make sure you have installed all packages using `pip install --upgrade -r requirements.txt`. The code is test using `pytorch==1.5.0`.
 
@@ -44,4 +44,8 @@ You can check the synthesis demo wavfile in `demo` folder (used Waveglow vocoder
 
 3. To start training run `python train.py -c configs/default.json`. You can specify to train baseline model as `python train.py -c configs/baseline.json --baseline`
 
-The main drawback of this model is requiring of duration-aligned dataset. You can find parsed LJSpeech filelist used in the training of current implementation in `filelists` folder. In order to use your data, make sure you have organized your filelists in the same way as provided LJSpeech ones. Also, in order to save time and neurons of your brains you may try to train the model on your dataset without duration-aligning using the pretrained duration model, which you may find via [this](https://drive.google.com/drive/folders/1eW9w7WHP2yp81-WafCpoOhvfDJSxckc_?usp=sharing) link.
+To make sure that everything works fine you may run unit tests in `tests` folder.
+
+# Pretrained model and dataset aligning problem
+
+The main drawback of this model is requiring of duration-aligned dataset. You can find parsed LJSpeech filelist used in the training of current implementation in `filelists` folder. In order to use your data, make sure you have organized your filelists in the same way as provided LJSpeech ones. Also, in order to save time and neurons of your brains you may try to train the model on your dataset without duration-aligning using the pretrained on LJSpeech duration model from my model checkpoint, which you may find via [this](https://drive.google.com/drive/folders/1eW9w7WHP2yp81-WafCpoOhvfDJSxckc_?usp=sharing) link.

@@ -50,7 +50,7 @@ class DurIANLoss(torch.nn.Module):
         durations_loss = MaskedL2Loss()(durations_predicted, durations_targets, input_mask)
         durations_loss_coef = 1e-5 if self._joint_minimization else 1
         duration_model_loss = \
-            (durations_loss_coef * durations_loss if self.solve_alignments_as_bce else 0) \
+            (durations_loss_coef * durations_loss if self.solve_alignments_as_mse else 0) \
             + (alignment_loss if self.solve_alignments_as_bce else 0)
         
         self.loss_stats_ = dict()
