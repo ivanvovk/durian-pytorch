@@ -43,6 +43,7 @@ class Dataset(torch.utils.data.Dataset):
     def __getitem__(self, index):
         item_meta = self._metadata[index]
         text, phonemes_start, phonemes_duration, phonemes_code, filename = item_meta.split('|')
+        
         item = {
             'text': text,
             'phonemes_start': str_to_int_list(phonemes_start),

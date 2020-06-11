@@ -5,7 +5,7 @@ class TextFrontend(object):
     """
     PAD = '#'
     EOS = '~'
-    PHONEME_CODES = sorted(lj_speech.POSSIBLE_PHONEME_CODES)
+    PHONEME_CODES = ...
     _PHONEME_SEP = ' '
     
     def __init__(self):
