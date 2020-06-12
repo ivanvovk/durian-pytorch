@@ -39,7 +39,7 @@ class Dataset(torch.utils.data.Dataset):
     def _get_mel(self, filename):
         if self._load_mels_from_disk:
             return torch.load(filename)
-        sr, y = read('/data/d1/speech/data/en_EN/linda_johnson/wavs22/' + filename)
+        sr, y = read(filename)
         assert sr == self.sampling_rate, \
             f"""SR of file `{filename}` ({sr}) doesn't match SR from config {self.sampling_rate}."""
         mel = self.mel_fn.transform(torch.FloatTensor(y.astype(float)).reshape(1, -1))
