@@ -11,10 +11,15 @@ def str_to_int_list(s):
 
 
 class Dataset(torch.utils.data.Dataset):
+    """
+    Your dataset should be of the following structure: wavs and their text filelist with transcriptions.
+    In filelist be sure that each line consists: text, phonemes start, phonemes duration, phonemes, wav filename
+    separated with "|".
+    """
     def __init__(self, config, training=True):
         super(Dataset, self).__init__()
         self.training = training
-        filelist = config['training_files'] if self.training else config['validation_files']
+        filelist = config['train_filelist'] if self.training else config['valid_filelist']
         with open(filelist, 'r') as f:
             self._metadata = [line.replace('\n', '') for line in f.readlines()]
         self._load_mels_from_disk = config['load_mels_from_disk']
@@ -34,10 +39,10 @@ class Dataset(torch.utils.data.Dataset):
     def _get_mel(self, filename):
         if self._load_mels_from_disk:
             return torch.load(filename)
-        sr, y = read(filename)
+        sr, y = read('/data/d1/speech/data/en_EN/linda_johnson/wavs22/' + filename)
         assert sr == self.sampling_rate, \
             f"""SR of file `{filename}` ({sr}) doesn't match SR from config {self.sampling_rate}."""
-        mel = self.mel_fn.transform(torch.FloatTensor(y).reshape(1, -1))
+        mel = self.mel_fn.transform(torch.FloatTensor(y.astype(float)).reshape(1, -1))
         return mel
 
     def __getitem__(self, index):
@@ -48,7 +53,7 @@ class Dataset(torch.utils.data.Dataset):
             'text': text,
             'phonemes_start': str_to_int_list(phonemes_start),
             'phonemes_duration': str_to_int_list(phonemes_duration),
-            'phonemes_code': phonemes_code,
+            'phonemes_code': phonemes_code.split(),
             'mel': self._get_mel(filename)
         }
         return item
@@ -62,15 +67,8 @@ class BatchCollate(object):
     Collates batch objects with padding, decreasing sort by input length, etc.
     """
     def __init__(self, config):
-        self.use_mel_normalization = config['use_mel_normalization']
-        if self.use_mel_normalization:
-            self._mean = config['MEL_MEAN']
-            self._std = config['MEL_STD']
         self.n_mel_channels = config['n_mel_channels']
         self.text_frontend = TextFrontend()
-    
-    def normalize(self, mel):
-        return (mel - self._mean) / self._std
     
     def __call__(self, batch):
         B = len(batch)
@@ -97,11 +95,14 @@ class BatchCollate(object):
             x = batch[i]
             assert len(x['phonemes_start']) == len(x['phonemes_duration'])
             for symbol_idx, (start, dur) in enumerate(zip(x['phonemes_start'], x['phonemes_duration'])):
-                alignments_padded[index, symbol_idx, start:start+dur] = torch.ones(dur, dtype=torch.float32)
+                if not start + dur > max_target_len:
+                    alignments_padded[index, symbol_idx, start:start+dur] = torch.ones(dur, dtype=torch.float32)
+                else:
+                    break
             sequence = x['phonemes_code']
             sequences_padded[index, :len(sequence)] = torch.LongTensor(sequence)
             mel = torch.FloatTensor(x['mel'])
-            mels_padded[index, :, :mel.shape[1]] = self.normalize(mel) if self.use_mel_normalization else mel
+            mels_padded[index, :, :mel.shape[1]] = mel
             output_lengths[index] = mel.shape[1]
         
         outputs = {

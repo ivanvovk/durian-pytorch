@@ -2,7 +2,7 @@ import numpy as np
 
 import torch
 
-from utils import get_lr
+from utils import get_lr, show_message
 
 
 class ModelTrainer(object):
@@ -19,14 +19,6 @@ class ModelTrainer(object):
         self.criterion = criterion
         
         self.logger.save_model_config(self._config)
-        
-        self.use_normalization = config['use_normalization']
-        if self.use_normalization:
-            self._mean = config['MEL_MEAN']
-            self._std = config['MEL_STD']
-    
-    def denormalize(self, x):
-        return x * self._std + self._mean
         
     def compute_loss(self, model, batch, training=True):
         model.train() if training else model.eval()
@@ -62,7 +54,7 @@ class ModelTrainer(object):
     def _should_validate(self, iteration):
         return (iteration % self._config['validation_step']) == 0
     
-    def validate(self, iteration, model, dataloader):
+    def validate(self, iteration, model, dataloader, verbose):
         if self._should_validate(iteration):
             _val_stats = []
             for batch in dataloader:
@@ -80,19 +72,27 @@ class ModelTrainer(object):
             alignment = outputs['alignments'][random_idx_from_last_batch].detach().cpu()
             alignment_target = batch['alignments_padded'][random_idx_from_last_batch].detach().cpu()
             stats.update({
-                'image/pre_output': self.denormalize(pre_mel) if self.use_normalization else pre_mel,
-                'image/postnet_output': self.denormalize(postnet_mel) if self.use_normalization else postnet_mel,
-                'image/mel_target': self.denormalize(mel_target) if self.use_normalization else mel_target,
+                'image/pre_output': pre_mel,
+                'image/postnet_output': postnet_mel,
+                'image/mel_target': mel_target,
                 'image/alignment_output': alignment,
                 'image/alignment_target': alignment_target
             })
             self.log_validating(iteration, stats)
 
-    def log_training(self, iteration, loss_stats):
+    def log_training(self, iteration, loss_stats, verbose=True):
+        show_message(
+            f"""Iteration {iteration} | Backbone loss {loss_stats['backbone_model/total_loss']} | Duration model {loss_stats['duration_model/total_loss']}""",
+            verbose=verbose
+        )
         self.logger.log(iteration, loss_stats={f'training/{key}': value
                                                for key, value in loss_stats.items()})
     
-    def log_validating(self, iteration, loss_stats):
+    def log_validating(self, iteration, loss_stats, verbose=True):
+        show_message(
+            f"""EVAL: Iteration {iteration} | Backbone loss {loss_stats['backbone_model/total_loss']} | Duration model {loss_stats['duration_model/total_loss']}""",
+            verbose=verbose
+        )
         self.logger.log(iteration, loss_stats={f'validating/{key}': value
                                                for key, value in loss_stats.items()})
         

@@ -1,18 +1,28 @@
 {
-    "use_normalization": false,
-    
     "n_epoch": 1000,
     "validation_step": 250,
     "checkpoint_save_step": 1000,
     
+    "train_filelist": "./filelists/train_filelist.txt",
+    "valid_filelist": "./filelists/valid_filelist.txt",
+    "load_mels_from_disk": false,
+    "logdir": "./baseline_test",
     "batch_size": 64,
     "learning_rate": 1e-3,
     "grad_clip_threshold": 1.0,
     "solve_alignments_as_bce": true,
     "solve_alignments_as_mse": true,
     
+    "sampling_rate": 22050,
+    "filter_length": 1024,
+    "hop_length": 256,
+    "win_length": 1024,
     "n_mel_channels": 80,
+    "mel_fmax": 8000,
+    "mel_fmin": 0,
+    
     "max_decoder_steps": 1500,
+    
     "embedding_dim": 256,
     
     "duration_model_rnn_dim": 256,

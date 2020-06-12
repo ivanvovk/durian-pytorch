@@ -54,8 +54,7 @@ class BackboneModel(BaseModule):
 
 class DurIAN(BaseDurIAN):
     """
-    Implementation of Duration Informed Attention Network (DurIAN)
-    improved version based on Tacotron insights.
+    Implementation of Duration Informed Attention Network (DurIAN).
     """
     def __init__(self, config):
         super(DurIAN, self).__init__()

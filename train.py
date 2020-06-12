@@ -53,6 +53,7 @@ def run(TTS_FRONTEND, TTS_CONFIG, args):
     logger = Logger(TTS_CONFIG['logdir'])
     trainer = ModelTrainer(config=TTS_CONFIG, optimizers=optimizers, logger=logger, criterion=criterion)
 
+    show_message('Start training...', verbose=args.verbose)
     try:
         iteration = 0
         for _ in range(TTS_CONFIG['n_epoch']):
@@ -63,12 +64,12 @@ def run(TTS_FRONTEND, TTS_CONFIG, args):
                 grad_norm = trainer.run_backward(model, losses=losses)
                 stats.update(grad_norm)
                 stats.update(trainer.get_current_lrs())
-                trainer.log_training(iteration, stats)
+                trainer.log_training(iteration, stats, verbose=args.verbose)
                 backbone_model_lr_scheduler.step(losses[0])
                 duration_model_lr_scheduler.step(losses[1])
                 
                 # Evaluation step
-                trainer.validate(iteration, model, val_dataloader)
+                trainer.validate(iteration, model, val_dataloader, verbose=args.verbose)
                 trainer.save_checkpoint(iteration, model)
                 iteration += 1
     except KeyboardInterrupt:
@@ -79,7 +80,7 @@ def run(TTS_FRONTEND, TTS_CONFIG, args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-c', '--config', required=True, type=str)
-    parser.add_argument('-b', '--baseline', required=False, default=False, type=bool)
+    parser.add_argument('-b', '--baseline', nargs='?', required=False, default=False, type=bool, const=True)
     parser.add_argument('-v', '--verbose', required=False, default=True, type=bool)
     args = parser.parse_args()
 

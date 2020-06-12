@@ -2,6 +2,9 @@
 **/*.pt
 **/*.pth
 **/*events*
+**/*.ipynb
+**/*baseline_test
+**/*default_test
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

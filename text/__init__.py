@@ -1,1 +1,1 @@
-from text_frontend import TextFrontend
+from .text_frontend import TextFrontend
