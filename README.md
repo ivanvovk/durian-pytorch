@@ -54,4 +54,26 @@ This implementation was trained using phonemized duration-aligned LJSpeech datas
 
 # Dataset alignment problem
 
-The main drawback of this model is requiring of duration-aligned dataset. You can find parsed LJSpeech filelist used in the training of current implementation in `filelists` folder. In order to use your data, make sure you have organized your filelists in the same way as provided LJSpeech ones. Also, in order to save time and neurons of your brains you may try to train the model on your dataset without duration-aligning using the pretrained on LJSpeech duration model from my model checkpoint.
+The main drawback of this model is requiring of duration-aligned dataset. You can find parsed LJSpeech filelist used in the training of current implementation in `filelists` folder. In order to use your data, make sure you have organized your filelists in the same way as provided LJSpeech ones. However, in order to save time and neurons of your brains you may try to train the model on your dataset without duration-aligning using the pretrained on LJSpeech duration model from my model checkpoint (didn't tried). But if you are interested in aligning personal dataset, carefully follow the next section.
+
+## How to align your own data
+
+In my experiments I aligned LJSpeech with [Montreal Forced Alignment](https://montreal-forced-aligner.readthedocs.io/en/latest/) tool. If here something will be unclear, please, follow instructions in toolkit's docs. To begin with, aligning algorithm has several steps:
+
+1. Organize your dataset properly. MFA requires it to be in a single folder of structure {utterance_<idx>.lab, utterance_<idx>.wav}. Make sure all your texts are of `.lab` format.
+2. Download MFA release and follow installation instructions via [this](https://montreal-forced-aligner.readthedocs.io/en/latest/installation.html) link.
+3. Once done with MFA, you need your dataset words dictionary with phonemes transcriptions. Here you have several options:
+   1. (Try this first) Download already done dictionary from [MFA pretrained models](https://montreal-forced-aligner.readthedocs.io/en/latest/pretrained_models.html) list (at the bottom of the page). In current implementation I have used English Arpabet dictionary. Here can be a problem: if your dataset contains some words missing in the dictionary, MFA may fail to parse it in the future and miss these files. You may skip them or try to preprocess your dataset with accordance to the dictionary or add missing words by hand (if not too much of them).
+   2. You may generate the dictionary with pretrained G2P model from [MFA pretrained models](https://montreal-forced-aligner.readthedocs.io/en/latest/pretrained_models.html) list using the command `bin/mfa_generate_dictionary /path/to/model_g2p.zip /path/to/data dict.txt`. Notice, that default MFA installation will automatically provide you with English pretrained model, which you may use.
+   3. In other cases, you'll need to train your own G2P model on your data. In order to train your model follow instructions via [this](https://montreal-forced-aligner.readthedocs.io/en/latest/g2p_model_training.html) link.
+4. Once you have your data prepared, dictionary and G2P model, now you are ready for aligning. Run the command `bin/mfa_align /path/to/data dict.txt path/to/model_g2p.zip outdir`. Wait until done. `outdir` folder will contain a list of out of vocabulary words and a folder with special files of `.TextGrid` format, where wavs alignments are stored.
+5. Now we want to process these text grid files in order to get the final filelist. Here you may find useful the python package `TextGrid`. Install it using `pip install TextGrid`. Here an example how to use it:
+
+    ```
+    import textgrid
+    tg = textgrid.TextGrid.fromFile('./outdir/data/text0.TextGrid')
+    ```
+
+    Now `tg` is the set two objects: first one contains aligned words, second one contains aligned phonemes. You need the second one. Extract durations for whole dataset by iterating over obtained `.TextGrid` files and prepare a filelist in same format as the ones I provided in `filelists` folder.
+
+I found an [overview](https://eleanorchodroff.com/tutorial/montreal-forced-aligner.html#overview-1) of several aligners. Maybe it will be helpful. However, I recommend you to use MFA as it has one of the best aligning accuracies, to my best knowledge.
