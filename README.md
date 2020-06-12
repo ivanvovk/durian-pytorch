@@ -60,7 +60,7 @@ The main drawback of this model is requiring of duration-aligned dataset. You ca
 
 In my experiments I aligned LJSpeech with [Montreal Forced Alignment](https://montreal-forced-aligner.readthedocs.io/en/latest/) tool. If here something will be unclear, please, follow instructions in toolkit's docs. To begin with, aligning algorithm has several steps:
 
-1. Organize your dataset properly. MFA requires it to be in a single folder of structure {utterance_<idx>.lab, utterance_<idx>.wav}. Make sure all your texts are of `.lab` format.
+1. Organize your dataset properly. MFA requires it to be in a single folder of structure {utterance_id.lab, utterance_id.wav}. Make sure all your texts are of `.lab` format.
 2. Download MFA release and follow installation instructions via [this](https://montreal-forced-aligner.readthedocs.io/en/latest/installation.html) link.
 3. Once done with MFA, you need your dataset words dictionary with phonemes transcriptions. Here you have several options:
    1. (Try this first) Download already done dictionary from [MFA pretrained models](https://montreal-forced-aligner.readthedocs.io/en/latest/pretrained_models.html) list (at the bottom of the page). In current implementation I have used English Arpabet dictionary. Here can be a problem: if your dataset contains some words missing in the dictionary, MFA may fail to parse it in the future and miss these files. You may skip them or try to preprocess your dataset with accordance to the dictionary or add missing words by hand (if not too much of them).
