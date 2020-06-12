@@ -74,6 +74,6 @@ In my experiments I aligned LJSpeech with [Montreal Forced Alignment](https://mo
     tg = textgrid.TextGrid.fromFile('./outdir/data/text0.TextGrid')
     ```
 
-    Now `tg` is the set two objects: first one contains aligned words, second one contains aligned phonemes. You need the second one. Extract durations for whole dataset by iterating over obtained `.TextGrid` files and prepare a filelist in same format as the ones I provided in `filelists` folder.
+    Now `tg` is the set two objects: first one contains aligned words, second one contains aligned phonemes. You need the second one. Extract durations (in frames! `tg` has intervals in seconds, thus convert) for whole dataset by iterating over obtained `.TextGrid` files and prepare a filelist in same format as the ones I provided in `filelists` folder.
 
 I found an [overview](https://eleanorchodroff.com/tutorial/montreal-forced-aligner.html#overview-1) of several aligners. Maybe it will be helpful. However, I recommend you to use MFA as it is one of the most accurate aligners, to my best knowledge.
