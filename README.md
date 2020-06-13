@@ -13,7 +13,10 @@ DurIAN model consists of two modules: backbone synthesizer and duration predicto
 
 ## Baseline model
 
-<img src="demo/baseline.png" alt="baseline" width="500" height="400">
+<p align="center">
+  <img src="demo/baseline.png" alt="baseline" width="700" height="350">
+</p>
+
 
 Here are some of the most notable differences from vanilla DurIAN:
 * Prosodic boundary markers aren't used (didn't have them labeled), and thus there's no 'skip states' exclusion of prosodic boundaries' hidden states
