@@ -9,11 +9,11 @@ DurIAN is encoder-decoder architecture for text-to-speech synthesis task. Unlike
 
 # Architecture details
 
-DurIAN model consists of two modules: backbone synthesizer and duration predictor. However, current implementation contains baseline version and paper-based version.
+DurIAN model consists of two modules: backbone synthesizer and duration predictor. However, current implementation contains baseline version and paper-based version. Baseline was made just for testing. All you need is vanilla version (paper-based).
 
 ## Baseline model
 
-![pipeline](demo/baseline.png)
+![pipeline](demo/baseline.png =250x250)
 
 Here are some of the most notable differences from vanilla DurIAN:
 * Prosodic boundary markers aren't used (didn't have them labeled), and thus there's no 'skip states' exclusion of prosodic boundaries' hidden states
