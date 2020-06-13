@@ -32,6 +32,7 @@ Here are some of the most notable differences from vanilla DurIAN:
 * Prosodic boundary markers aren't used (we didn't have them labeled), and thus there's no 'skip states' exclusion of prosodic boundaries' hidden states
 * Style codes aren't used too (same reason)
 * Removed Prenet before CBHG encoder (didn't improved accuracy during experiments)
+* Decoder's recurrent cell outputs single spectrogram frame at a time
 
 ## 2.3 Training
 
