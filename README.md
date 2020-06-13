@@ -13,7 +13,7 @@ DurIAN model consists of two modules: backbone synthesizer and duration predicto
 
 ## Baseline model
 
-![pipeline](demo/baseline.png =250x250)
+![pipeline](demo/baseline.png | width=100)
 
 Here are some of the most notable differences from vanilla DurIAN:
 * Prosodic boundary markers aren't used (didn't have them labeled), and thus there's no 'skip states' exclusion of prosodic boundaries' hidden states
@@ -36,9 +36,7 @@ Both backbone synthesizer and duration model are trained simultaneously. For imp
 
 # Reproducibility
 
-![demo](demo/demo-model-outputs.png)
-
-You can check the synthesis demo wavfile (was obtained much before convergence) in `demo` folder (used Waveglow vocoder).
+You can check the synthesis **demo wavfile (was obtained much before convergence)** in `demo` folder (used Waveglow vocoder).
 
 1. First of all, make sure you have installed all packages using `pip install --upgrade -r requirements.txt`. The code is tested using `pytorch==1.5.0`
 
