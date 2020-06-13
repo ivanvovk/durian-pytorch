@@ -9,7 +9,7 @@ DurIAN is encoder-decoder architecture for text-to-speech synthesis task. Unlike
 
 # 2 Architecture details
 
-DurIAN model consists of two modules: backbone synthesizer and duration predictor. However, current implementation contains baseline version and paper-based version. Baseline was made just for testing. All you need is vanilla version (paper-based).
+DurIAN model consists of two modules: backbone synthesizer and duration predictor. However, current implementation contains baseline version and paper-based version of DurIAN. Baseline was made just for testing. All you need is vanilla version (paper-based).
 
 ## 2.1 Baseline model
 
@@ -18,12 +18,11 @@ DurIAN model consists of two modules: backbone synthesizer and duration predicto
 </p>
 
 
-Here are some of the most notable differences from vanilla DurIAN:
+Here are some of the most notable differences from DurIAN described in paper:
 * Prosodic boundary markers aren't used (didn't have them labeled), and thus there's no 'skip states' exclusion of prosodic boundaries' hidden states
 * Style codes aren't used too (same reason)
-* Simpler network architectures
+* Simpler encoder and decoder
 * No Prenet in decoder
-* No attention used in decoder
 * Decoder's recurrent cell outputs single spectrogram frame at a time
 * Decoder's recurrent cell isn't conditioned on its own outputs (isn't "autogressive")
 
