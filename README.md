@@ -3,15 +3,15 @@ Implementation of "Duration Informed Attention Network for Multimodal Synthesis"
 
 **Status**: released
 
-# Info
+# 1 Info
 
 DurIAN is encoder-decoder architecture for text-to-speech synthesis task. Unlike prior architectures like Tacotron 2 it doesn't learn attention mechanism but takes into account phoneme durations information. So, of course, to use this model one should have phonemized and duration-aligned dataset. However, you may try to use pretrained duration model on LJSpeech dataset (CMU dict used). Links will be provided below.
 
-# Architecture details
+# 2 Architecture details
 
 DurIAN model consists of two modules: backbone synthesizer and duration predictor. However, current implementation contains baseline version and paper-based version. Baseline was made just for testing. All you need is vanilla version (paper-based).
 
-## Baseline model
+## 2.1 Baseline model
 
 <p align="center">
   <img src="demo/baseline.png" alt="baseline" width="700" height="350">
@@ -27,17 +27,17 @@ Here are some of the most notable differences from vanilla DurIAN:
 * Decoder's recurrent cell outputs single spectrogram frame at a time
 * Decoder's recurrent cell isn't conditioned on its own outputs (isn't "autogressive")
 
-## Vanilla version
+## 2.2 Vanilla version
 
 * Prosodic boundary markers aren't used (we didn't have them labeled), and thus there's no 'skip states' exclusion of prosodic boundaries' hidden states
 * Style codes aren't used too (same reason)
 * Removed Prenet before CBHG encoder (didn't improved accuracy during experiments)
 
-## Training
+## 2.3 Training
 
 Both backbone synthesizer and duration model are trained simultaneously. For implementation simplifications duration model predicts alignment over the fixed max number of frames. You can learn this outputs as BCE problem, MSE problem by summing over frames-axis or to use both losses (haven't tested this one). Experiments showed that BCE-version of optimization process showed itself being unstable with longer text sequences, so prefer using MSE (don't mind if you get bad alignments in Tensorboard).
 
-# Reproducibility
+# 3 Reproducibility
 
 You can check the synthesis **demo wavfile (was obtained much before convergence)** in `demo` folder (used Waveglow vocoder).
 
@@ -49,15 +49,15 @@ You can check the synthesis **demo wavfile (was obtained much before convergence
 
 To make sure that everything works fine at your local environment you may run unit tests in `tests` folder by `python <test_you_want_to_run.py>`.
 
-# Pretrained models
+# 4 Pretrained models
 
 This implementation was trained using phonemized duration-aligned LJSpeech dataset with BCE duration loss minimization. You may find it via [this](https://drive.google.com/drive/folders/1eW9w7WHP2yp81-WafCpoOhvfDJSxckc_?usp=sharing) link.
 
-# Dataset alignment problem
+# 5 Dataset alignment problem
 
 The main drawback of this model is requiring of duration-aligned dataset. You can find parsed LJSpeech filelist used in the training of current implementation in `filelists` folder. In order to use your data, make sure you have organized your filelists in the same way as provided LJSpeech ones. However, in order to save time and neurons of your brains you may try to train the model on your dataset without duration-aligning using the pretrained on LJSpeech duration model from my model checkpoint (didn't tried). But if you are interested in aligning personal dataset, carefully follow the next section.
 
-## How to align your own data
+# 6 How to align your own data
 
 In my experiments I aligned LJSpeech with [Montreal Forced Alignment](https://montreal-forced-aligner.readthedocs.io/en/latest/) tool. If here something will be unclear, please, follow instructions in toolkit's docs. To begin with, aligning algorithm has several steps:
 
