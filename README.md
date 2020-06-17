@@ -9,33 +9,14 @@ DurIAN is encoder-decoder architecture for text-to-speech synthesis task. Unlike
 
 # 2 Architecture details
 
-DurIAN model consists of two modules: backbone synthesizer and duration predictor. However, current implementation contains baseline version and paper-based version of DurIAN. Baseline was made just for testing. All you need is vanilla version (paper-based).
-
-## 2.1 Baseline model
-
-<p align="center">
-  <img src="demo/baseline.png" alt="baseline" width="700" height="350">
-</p>
-
-
-Here are some of the most notable differences from DurIAN described in paper:
-* Prosodic boundary markers aren't used (didn't have them labeled), and thus there's no 'skip states' exclusion of prosodic boundaries' hidden states
-* Style codes aren't used too (same reason)
-* Simpler encoder and decoder
-* No Prenet in decoder
-* Decoder's recurrent cell outputs single spectrogram frame at a time
-* Decoder's recurrent cell isn't conditioned on its own outputs (isn't "autogressive")
-
-## 2.2 Vanilla version
+DurIAN model consists of two modules: backbone synthesizer and duration predictor. Here are some of the most notable differences from DurIAN described in paper:
 
 * Prosodic boundary markers aren't used (didn't have them labeled), and thus there's no 'skip states' exclusion of prosodic boundaries' hidden states
 * Style codes aren't used too (same reason)
 * Removed Prenet before CBHG encoder (didn't improved accuracy during experiments)
 * Decoder's recurrent cell outputs single spectrogram frame at a time
 
-## 2.3 Training
-
-Both backbone synthesizer and duration model are trained simultaneously. For implementation simplifications duration model predicts alignment over the fixed max number of frames. You can learn this outputs as BCE problem, MSE problem by summing over frames-axis or to use both losses (haven't tested this one). Experiments showed that BCE-version of optimization process showed itself being unstable with longer text sequences, so prefer using MSE (don't mind if you get bad alignments in Tensorboard).
+Both backbone synthesizer and duration model are trained simultaneously. For implementation simplifications duration model predicts alignment over the fixed max number of frames. You can learn this outputs as BCE problem, MSE problem by summing over frames-axis or to use both losses (haven't tested this one), set it in the `config.json`. Experiments showed that just-BCE version of optimization process showed itself being unstable with longer text sequences, so prefer using MSE+BCE or just-MSE (don't mind if you get bad alignments in Tensorboard).
 
 # 3 Reproducibility
 

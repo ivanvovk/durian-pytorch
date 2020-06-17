@@ -1,4 +1,8 @@
 import nltk
+try:
+    from listener import ipatoarpabet
+except ImportError:
+    raise ImportError("Please run `pip install git+https://github.com/shrubb/listener.git`.")
 
 
 class TextFrontend(object):

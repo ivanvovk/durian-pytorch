@@ -54,7 +54,7 @@ class ModelTrainer(object):
     def _should_validate(self, iteration):
         return (iteration % self._config['validation_step']) == 0
     
-    def validate(self, iteration, model, dataloader, verbose):
+    def validate(self, iteration, model, dataloader, verbose=True):
         if self._should_validate(iteration):
             _val_stats = []
             for batch in dataloader:
@@ -78,7 +78,7 @@ class ModelTrainer(object):
                 'image/alignment_output': alignment,
                 'image/alignment_target': alignment_target
             })
-            self.log_validating(iteration, stats)
+            self.log_validating(iteration, stats, verbose)
 
     def log_training(self, iteration, loss_stats, verbose=True):
         show_message(
