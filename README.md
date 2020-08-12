@@ -24,7 +24,7 @@ You can check the synthesis **demo wavfile (was obtained much before convergence
 
 1. First of all, make sure you have installed all packages using `pip install --upgrade -r requirements.txt`. The code is tested using `pytorch==1.5.0`
 
-2. Clone the repository: `git clone https://github.com/ivanvovk/DurrIAN`, then `cd DurIAN` and `git submodule update --init` to clone audio processing files
+2. Clone the repository: `git clone https://github.com/ivanvovk/DurrIAN`
 
 3. To start training paper-based DurIAN version run `python train.py -c configs/default.json`. You can specify to train baseline model as `python train.py -c configs/baseline.json --baseline`
 
