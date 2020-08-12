@@ -1,3 +1,0 @@
-[submodule "torchaudio"]
-	path = torchaudio
-	url = https://github.com/ivanvovk/torchaudio
